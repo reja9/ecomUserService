@@ -11,4 +11,5 @@ public interface UserService {
     public User setUserRoles(UUID userId, SendUserRolesDto sendUserRolesDto);
 
     public List<User> getAllUsers();
+    public User getUserDetailsByToken(String token);
 }

@@ -30,4 +30,8 @@ public class UserController {
 
         return ResponseEntity.ok(userService.getAllUsers());
     }
+    @GetMapping("/token")
+    public ResponseEntity getUserBytoken(@RequestParam ("token") String token){
+        return ResponseEntity.ok(userService.getUserDetailsByToken(token));
+    }
 }

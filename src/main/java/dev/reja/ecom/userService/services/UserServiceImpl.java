@@ -1,10 +1,14 @@
 package dev.reja.ecom.userService.services;
 
 import dev.reja.ecom.userService.dtos.SendUserRolesDto;
+import dev.reja.ecom.userService.exceptions.SessionNotFoundException;
 import dev.reja.ecom.userService.exceptions.UserNotFoundException;
 import dev.reja.ecom.userService.models.Role;
+import dev.reja.ecom.userService.models.Session;
+import dev.reja.ecom.userService.models.SessionStatus;
 import dev.reja.ecom.userService.models.User;
 import dev.reja.ecom.userService.repositories.RoleRepository;
+import dev.reja.ecom.userService.repositories.SessionRepository;
 import dev.reja.ecom.userService.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,8 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private SessionRepository sessionRepository;
     @Override
     public User findById(UUID userId) {
         return userRepository.findById(userId).orElseThrow(
@@ -41,5 +47,15 @@ public class UserServiceImpl implements UserService{
     public List<User> getAllUsers() {
         List<User> users=userRepository.findAll();
         return users;
+    }
+
+    @Override
+    public User getUserDetailsByToken(String token) {
+        Session session=sessionRepository.findByTokenAndSessionStatus(token, SessionStatus.ACTIVE).orElseThrow(
+                ()-> new SessionNotFoundException("The user is no=t valid")
+        );
+        User user=session.getUser();
+
+        return user;
     }
 }
