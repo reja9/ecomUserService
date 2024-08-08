@@ -15,6 +15,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.MacAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -29,14 +30,15 @@ public class AuthServiceImpl implements AuthService{
     private UserRepository userRepository;
     @Autowired
     private SessionRepository sessionRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public LoginResponseDto logIn(String email, String password) {
         User user=userRepository.findByEmail(email).orElseThrow(
                 ()-> new UserNotFoundException("User is not present for the given email "+ email)
         );
 
-        if(!bCryptPasswordEncoder.matches(password,user.getPassword())){
+        if(!passwordEncoder.matches(password,user.getPassword())){
             throw new InvalidCredentialsException("Invalid Credential");
         }
 
@@ -72,17 +74,25 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public User signUp(SignUpRequestDto signUpRequestDto) {
+        User user=new User();
         if(userRepository.findByEmail(signUpRequestDto.getEmail()).isPresent()){
             throw new RandomException("User Already Present");
         }
-        User user=new User();
-        user.setName(signUpRequestDto.getName());
-        user.setUserName(signUpRequestDto.getUserName());
-        user.setEmail(signUpRequestDto.getEmail());
-        user.setContactNo(signUpRequestDto.getContactNo());
-        String password=bCryptPasswordEncoder.encode(signUpRequestDto.getPassword());
-        user.setPassword(password);
-        userRepository.save(user);
+        if(getUserNameAvailability(signUpRequestDto.getUserName())){
+            throw new RandomException("userName Already Exits");
+        }
+
+        else{
+
+            user.setName(signUpRequestDto.getName());
+            user.setUserName(signUpRequestDto.getUserName());
+            user.setEmail(signUpRequestDto.getEmail());
+            user.setContactNo(signUpRequestDto.getContactNo());
+            String password=passwordEncoder.encode(signUpRequestDto.getPassword());
+            user.setPassword(password);
+            userRepository.save(user);
+        }
+
         return user;
     }
 
@@ -96,5 +106,14 @@ public class AuthServiceImpl implements AuthService{
         session.setSessionStatus(SessionStatus.ENDED);
         sessionRepository.save(session);
         return session.getUser()+" is logged out syccessfully";
+    }
+
+    @Override
+    public boolean getUserNameAvailability(String userName) {
+        Optional<User> userOptional=userRepository.findByUserName(userName);
+        if(userOptional.isPresent()){
+            return true;
+        }
+        return false;
     }
 }

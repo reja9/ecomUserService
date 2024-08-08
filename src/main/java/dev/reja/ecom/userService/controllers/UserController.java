@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -31,7 +31,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
     @GetMapping("/token")
-    public ResponseEntity getUserBytoken(@RequestParam ("token") String token){
+    public ResponseEntity getUserBytoken(@RequestHeader ("Authorization") String token){
         return ResponseEntity.ok(userService.getUserDetailsByToken(token));
     }
 }

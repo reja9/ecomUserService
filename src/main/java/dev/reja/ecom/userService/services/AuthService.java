@@ -13,4 +13,5 @@ public interface AuthService {
     public LoginResponseDto logIn(String email, String password);
     public User signUp(SignUpRequestDto signUpRequestDto);
     public String logout(String token, UUID userId);
+    public boolean getUserNameAvailability(String userName);
 }

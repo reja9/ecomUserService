@@ -16,7 +16,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity login(String email, String password){
+    public ResponseEntity login(@RequestParam("email") String email, @RequestParam("password") String password){
         return ResponseEntity.ok(authService.logIn(email,password));
 
     }
@@ -29,6 +29,11 @@ public class AuthController {
     @PostMapping("/logout/{id}")
     public ResponseEntity logout(@PathVariable ("id") UUID userId, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(authService.logout(token,userId));
+    }
+    @GetMapping("userName/availavility")
+    public ResponseEntity getAvailableUserName(String userName){
+
+        return ResponseEntity.ok(authService.getUserNameAvailability(userName));
     }
 
 
