@@ -31,12 +31,19 @@ public class SpringSecurity {
 
         return http.authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers("/role/**", "/user/**").authenticated()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+    private static final String[] AUTH_WHITELIST={
+            "/v3/api-docs/**",
+            "/v3/api-docs.yml",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+    };
 
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
