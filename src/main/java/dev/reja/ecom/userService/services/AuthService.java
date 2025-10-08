@@ -2,6 +2,7 @@ package dev.reja.ecom.userService.services;
 
 import dev.reja.ecom.userService.dtos.LoginResponseDto;
 import dev.reja.ecom.userService.dtos.SignUpRequestDto;
+import dev.reja.ecom.userService.dtos.SignUpResponseDto;
 import dev.reja.ecom.userService.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +12,9 @@ public interface AuthService {
 
 
     public LoginResponseDto logIn(String email, String password);
-    public User signUp(SignUpRequestDto signUpRequestDto);
+    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto);
     public String logout(String token, UUID userId);
     public boolean getUserNameAvailability(String userName);
+    public User userDetailsByToken(String userToken);
+    public String getAccessToken(String refrehToken);
 }

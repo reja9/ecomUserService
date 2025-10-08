@@ -12,5 +12,6 @@ public interface UserService {
 
     public List<User> getAllUsers();
     public User getUserDetailsByToken(String token);
+    public User updateUser(User user);
 
 }

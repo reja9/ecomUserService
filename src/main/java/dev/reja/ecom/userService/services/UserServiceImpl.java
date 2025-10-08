@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
                 ()-> new UserNotFoundException("UserId "+userId+" is not in the db")
         );
         Set<Role> roles=roleRepository.findByIdIn(sendUserRolesDto.getRoleIds());
-        user.setRoles(roles);
+
         return user;
 
     }
@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService{
         User user=session.getUser();
 
         return user;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 
 

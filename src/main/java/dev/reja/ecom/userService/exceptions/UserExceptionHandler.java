@@ -1,5 +1,6 @@
 package dev.reja.ecom.userService.exceptions;
 
+import dev.reja.ecom.userService.controllers.AuthController;
 import dev.reja.ecom.userService.controllers.UserController;
 import dev.reja.ecom.userService.dtos.ExceptionResponseDto;
 import org.springframework.http.HttpStatus;

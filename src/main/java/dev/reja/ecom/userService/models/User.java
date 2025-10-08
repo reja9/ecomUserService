@@ -20,7 +20,7 @@ public class User extends BaseModel{
     private String password;
     private String userName;
 
-    @ManyToMany
-    private Set<Role> roles=new HashSet<>();
+//    @ManyToMany
+//    private Set<Role> roles=new HashSet<>();
 
 }

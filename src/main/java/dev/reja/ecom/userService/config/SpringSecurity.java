@@ -32,7 +32,7 @@ public class SpringSecurity {
         return http.authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .requestMatchers("/role/**", "/user/**").authenticated()
+                        .requestMatchers("/role/**", "/user/**", "/auth/token", "/auth/updateUser").authenticated()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

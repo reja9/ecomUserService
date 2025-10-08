@@ -2,12 +2,15 @@ package dev.reja.ecom.userService.controllers;
 
 import dev.reja.ecom.userService.dtos.SendUserRolesDto;
 import dev.reja.ecom.userService.models.Role;
+import dev.reja.ecom.userService.models.User;
 import dev.reja.ecom.userService.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("")
@@ -34,4 +37,11 @@ public class UserController {
     public ResponseEntity getUserBytoken(@RequestHeader ("Authorization") String token){
         return ResponseEntity.ok(userService.getUserDetailsByToken(token));
     }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity updateUser(@RequestHeader ("Authorization") String token,
+                                     @RequestBody User user){
+        return ok(userService.updateUser(user));
+    }
 }
+

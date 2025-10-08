@@ -7,8 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class LoginResponseDto {
-
+public class SignUpResponseDto {
     private String token;
     private String refreshToken;
     private UUID userId;
